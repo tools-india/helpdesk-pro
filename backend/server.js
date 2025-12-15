@@ -83,9 +83,10 @@ app.use((req, res) => {
 const PORT = process.env.PORT || 3000;
 
 // Connect to database and then start server
-connectDB().then(() => {
-    app.listen(PORT, () => {
-        console.log(`
+if (require.main === module) {
+    connectDB().then(() => {
+        app.listen(PORT, () => {
+            console.log(`
 ║                                                       ║
 ║   🎫 HELPDESK SYSTEM (Single Tenant)                 ║
 ║                                                       ║
@@ -97,12 +98,16 @@ connectDB().then(() => {
 ║   - Employee Portal: /                                ║
 ║                                                       ║
 ╚═══════════════════════════════════════════════════════╝
-      `);
+          `);
+        });
+    }).catch(err => {
+        console.error('Failed to connect to Database. Server shutting down.', err);
+        process.exit(1);
     });
-}).catch(err => {
-    console.error('Failed to connect to Database. Server shutting down.', err);
-    process.exit(1);
-});
+} else {
+    // For Serverless environment (Vercel)
+    connectDB();
+}
 
 // Handle unhandled promise rejections
 process.on('unhandledRejection', (err, promise) => {
@@ -110,3 +115,5 @@ process.on('unhandledRejection', (err, promise) => {
     // Close server & exit process
     // server.close(() => process.exit(1));
 });
+
+module.exports = app;
