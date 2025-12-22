@@ -23,11 +23,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files (uploads)
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+app.use('/uploads', express.static(process.env.UPLOAD_DIR || path.join(__dirname, '../uploads')));
 
 // API Routes
 app.use('/api/auth', require('./routes/auth'));
-// app.use('/api/companies', require('./routes/companies')); // Removed for single-tenant
+
 app.use('/api/employees', require('./routes/employees'));
 app.use('/api/projects', require('./routes/projects'));
 app.use('/api/tickets', require('./routes/tickets'));

@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Contact Support - Helpdesk</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#254798",
+                        secondary: "#EFF3FC",
+                        "background-light": "#F3F5FA",
+                        "background-dark": "#0F172A",
+                        "surface-light": "#FFFFFF",
+                        "surface-dark": "#1E293B",
+                        "text-main-light": "#111827",
+                        "text-main-dark": "#F9FAFB",
+                        "text-sub-light": "#6B7280",
+                        "text-sub-dark": "#9CA3AF",
+                    },
+                    borderRadius: {
+                        DEFAULT: "5px",
+                        'sm': "5px",
+                        'md': "5px",
+                        'lg': "5px",
+                        'xl': "5px",
+                        '2xl': "5px",
+                        '3xl': "5px",
+                    },
+                    fontFamily: {
+                        display: ["Inter", "sans-serif"],
+                    },
+                },
+            },
+        };
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined" rel="stylesheet" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark h-screen overflow-hidden flex">
+    <!-- Mobile Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"
+        onclick="toggleSidebar()">
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed md:relative w-64 bg-surface-light dark:bg-surface-dark border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between flex-shrink-0 z-40 md:z-20 h-screen -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex-1 flex flex-col">
+            <div class="h-20 flex items-center px-6 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
+                <div class="flex items-center gap-3 w-full justify-center">
+                    <img src="/assets/images/shubham-logo.png" alt="Shubham Logo" class="h-12 w-auto object-contain">
+                </div>
+            </div>
+            <nav class="p-4 space-y-1 flex-1 overflow-y-auto">
+                <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
+                    href="/">
+                    <span class="material-icons-outlined mr-3">home</span>
+                    Home
+                </a>
+                <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
+                    href="#" onclick="handleCreateTicketClick(event)">
+                    <span class="material-icons-outlined mr-3">add_box</span>
+                    Create Ticket
+                </a>
+                <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
+                    href="/check-status.html">
+                    <span class="material-icons-outlined mr-3">fact_check</span>
+                    Check Status
+                </a>
+                <div class="pt-4 pb-2">
+                    <div class="h-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
+                </div>
+                <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
+                    href="/knowledge-base.html">
+                    <span class="material-icons-outlined mr-3">menu_book</span>
+                    Knowledge Base
+                </a>
+                <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
+                    href="/it-policy.html">
+                    <span class="material-icons-outlined mr-3">policy</span>
+                    IT Policy
+                </a>
+                <a class="flex items-center px-4 py-3 bg-secondary dark:bg-blue-900/40 text-primary dark:text-blue-300 rounded-lg font-medium transition-colors"
+                    href="/contact-support.html">
+                    <span class="material-icons-outlined mr-3">mail_outline</span>
+                    Contact Support
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
+        <header
+            class="h-20 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()"
+                    class="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <span class="material-icons-outlined text-gray-700 dark:text-gray-300">menu</span>
+                </button>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-900 dark:text-white">Contact Support</h1>
+                    <p class="text-xs text-text-sub-light dark:text-text-sub-dark hidden sm:block">Get in touch with our
+                        support teams</p>
+                </div>
+            </div>
+            <div class="flex items-center space-x-6">
+                <div class="flex items-center space-x-3">
+                    <span class="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:block"
+                        id="userName">Guest</span>
+                    <div onclick="toggleAuthModal()"
+                        class="h-9 w-9 bg-green-700 text-white rounded-full flex items-center justify-center text-sm font-medium shadow-sm cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+                        <img id="userAvatar" src="https://ui-avatars.com/api/?name=Guest&background=10b981" alt="Avatar"
+                            class="rounded-full h-full w-full">
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-1 overflow-y-auto bg-background-light dark:bg-background-dark p-6 md:p-10">
+            <div class="max-w-4xl mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- IT Support Card -->
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-6">
+                            <div
+                                class="h-12 w-12 bg-blue-50 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                                <span
+                                    class="material-icons-outlined text-primary dark:text-blue-400 text-2xl">computer</span>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Active</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">IT Support</h3>
+                        <p class="text-sm font-semibold text-primary dark:text-blue-400 mb-2">Vishal Desai</p>
+                        <p class="text-sm text-gray-500 mb-6">For hardware issues, network connectivity, software
+                            installation, and general technical assistance.</p>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-outlined text-gray-400 text-sm">email</span>
+                                <a href="mailto:it.support@shubham.biz"
+                                    class="text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">it.support@shubham.biz</a>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-outlined text-gray-400 text-sm">call</span>
+                                <a href="tel:+919876543210"
+                                    class="text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">+91
+                                    98765 43210</a>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-outlined text-gray-400 text-sm">schedule</span>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Mon - Sat, 9:30 AM - 6:30
+                                    PM</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ERP Support Card -->
+                    <div
+                        class="bg-surface-light dark:bg-surface-dark rounded-xl shadow-sm p-6 border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-6">
+                            <div
+                                class="h-12 w-12 bg-purple-50 dark:bg-purple-900/20 rounded-lg flex items-center justify-center">
+                                <span
+                                    class="material-icons-outlined text-purple-600 dark:text-purple-400 text-2xl">dns</span>
+                            </div>
+                            <span
+                                class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">Active</span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-1">ERP Support</h3>
+                        <p class="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">Bharath Pareekh</p>
+                        <p class="text-sm text-gray-500 mb-6">For assistance with the ERP system, module access, data
+                            issues, and reporting bugs.</p>
+
+                        <div class="space-y-3">
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-outlined text-gray-400 text-sm">email</span>
+                                <a href="mailto:erp.support@shubham.biz"
+                                    class="text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">erp.support@shubham.biz</a>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-outlined text-gray-400 text-sm">call</span>
+                                <a href="tel:+919876543211"
+                                    class="text-sm text-gray-700 dark:text-gray-300 hover:text-primary transition-colors">+91
+                                    98765 43211</a>
+                            </div>
+                            <div class="flex items-center gap-3">
+                                <span class="material-icons-outlined text-gray-400 text-sm">schedule</span>
+                                <span class="text-sm text-gray-700 dark:text-gray-300">Mon - Sat, 9:30 AM - 6:30
+                                    PM</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Emergency Contact -->
+                <div
+                    class="mt-8 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-xl p-6">
+                    <div class="flex items-start gap-4">
+                        <span
+                            class="material-icons-outlined text-orange-600 dark:text-orange-400 text-2xl mt-1">warning</span>
+                        <div>
+                            <h4 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Critical System Outage?
+                            </h4>
+                            <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">
+                                If you are experiencing a complete system failure or critical blocker, please raise a
+                                generic "Critical" ticket immediately or contact the emergency line below.
+                            </p>
+                            <a href="tel:+919876543212"
+                                class="inline-flex items-center text-orange-700 dark:text-orange-400 font-semibold hover:underline">
+                                <span class="material-icons-outlined text-sm mr-2">call</span>
+                                Emergency Line: +91 98765 43212
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer
+            class="bg-surface-light dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700 py-4 px-8 flex-shrink-0">
+            <div
+                class="flex flex-col md:flex-row items-center justify-between gap-2 text-sm text-text-sub-light dark:text-text-sub-dark">
+                <div class="flex items-center gap-1">
+                    <span>© 2024</span>
+                    <span class="font-semibold text-gray-900 dark:text-white">Shubham EPC Pvt. Ltd.</span>
+                    <span>All rights reserved.</span>
+                </div>
+
+            </div>
+        </footer>
+    </div>
+
+    <!-- Auth Modal (Reused) -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <!-- ... (Same auth modal structure as other pages, simplified for brevity or can be dynamically loaded) ... -->
+        <!-- Keeping it simple for this page for now, as user is likely logged in or just viewing public info -->
+        <div class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-2xl max-w-md w-full p-8 relative">
+            <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600"><span
+                    class="material-icons-outlined">close</span></button>
+            <p class="text-center text-gray-500">Please go to Home to Login/Signup</p>
+            <a href="/" class="block w-full bg-primary text-white text-center py-2 rounded mt-4">Go to Home</a>
+        </div>
+    </div>
+
+    <script src="/shared/js/api.js"></script>
+    <script src="/shared/js/auth.js"></script>
+    <script>
+        // Basic sidebar toggle
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        // Auth placeholder
+        function toggleAuthModal() {
+            document.getElementById('authModal').classList.toggle('hidden');
+        }
+
+        // Initialize user info
+        function initializeAuth() {
+            const employee = localStorage.getItem('employee') ? JSON.parse(localStorage.getItem('employee')) : null;
+            if (employee) {
+                document.getElementById('userName').textContent = employee.name;
+                document.getElementById('userAvatar').src = `https://ui-avatars.com/api/?name=${encodeURIComponent(employee.name)}&background=10b981`;
+            }
+        }
+        initializeAuth();
+
+        // Handle create ticket click
+        function handleCreateTicketClick(event) {
+            event.preventDefault();
+            const employee = localStorage.getItem('employee');
+            if (!employee) {
+                alert('Please login to create a ticket');
+                return;
+            }
+            window.location.href = '/create-ticket.html';
+        }
+    </script>
+</body>
+
+</html>

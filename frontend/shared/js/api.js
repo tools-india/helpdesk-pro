@@ -159,6 +159,11 @@ const TicketAPI = {
     }),
 
     getStatistics: () => apiRequest('/tickets/stats'),
+
+    updateByEmployee: (ticketId, data) => apiRequest(`/tickets/employee-update/${ticketId}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    }),
 };
 
 // ========== Announcement APIs ==========

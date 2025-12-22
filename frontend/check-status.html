@@ -27,9 +27,13 @@
                         display: ["Inter", "sans-serif"],
                     },
                     borderRadius: {
-                        DEFAULT: "0.5rem",
-                        'xl': '0.75rem',
-                        '2xl': '1rem',
+                        DEFAULT: "5px",
+                        'sm': "5px",
+                        'md': "5px",
+                        'lg': "5px",
+                        'xl': "5px",
+                        '2xl': "5px",
+                        '3xl': "5px",
                     },
                 },
             },
@@ -47,8 +51,14 @@
 
 <body
     class="bg-background-light dark:bg-background-dark text-text-main-light dark:text-text-main-dark h-screen overflow-hidden flex">
-    <aside
-        class="w-64 bg-surface-light dark:bg-surface-dark border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between flex-shrink-0 z-20 relative">
+    <!-- Mobile Overlay -->
+    <div id="sidebarOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-30 hidden md:hidden"
+        onclick="toggleSidebar()">
+    </div>
+
+    <!-- Sidebar -->
+    <aside id="sidebar"
+        class="fixed md:relative w-64 bg-surface-light dark:bg-surface-dark border-r border-gray-200 dark:border-gray-700 flex flex-col justify-between flex-shrink-0 z-40 md:z-20 h-screen -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="flex-1 flex flex-col">
             <div class="h-20 flex items-center px-6 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
                 <div class="flex items-center gap-3 w-full justify-center">
@@ -75,17 +85,17 @@
                     <div class="h-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
                 </div>
                 <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
-                    href="#">
+                    href="/knowledge-base.html">
                     <span class="material-icons-outlined mr-3">menu_book</span>
                     Knowledge Base
                 </a>
                 <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
-                    href="#">
+                    href="/it-policy.html">
                     <span class="material-icons-outlined mr-3">policy</span>
                     IT Policy
                 </a>
                 <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
-                    href="#">
+                    href="/contact-support.html">
                     <span class="material-icons-outlined mr-3">mail_outline</span>
                     Contact Support
                 </a>
@@ -94,20 +104,21 @@
     </aside>
     <div class="flex-1 flex flex-col h-screen overflow-hidden relative">
         <header
-            class="h-20 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-8 flex-shrink-0 z-10">
-            <div>
-                <h1 class="text-lg font-bold text-gray-900 dark:text-white">Check Ticket Status</h1>
-                <p class="text-xs text-text-sub-light dark:text-text-sub-dark hidden sm:block">Track your requests
-                    without logging in
-                </p>
+            class="h-20 bg-surface-light dark:bg-surface-dark border-b border-gray-200 dark:border-gray-700 flex items-center justify-between px-4 md:px-8 flex-shrink-0 z-10">
+            <div class="flex items-center gap-4">
+                <button onclick="toggleSidebar()"
+                    class="md:hidden p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors">
+                    <span class="material-icons-outlined text-gray-700 dark:text-gray-300">menu</span>
+                </button>
+                <div>
+                    <h1 class="text-lg font-bold text-gray-900 dark:text-white">Check Ticket Status</h1>
+                    <p class="text-xs text-text-sub-light dark:text-text-sub-dark hidden sm:block">Track your requests
+                        without logging in
+                    </p>
+                </div>
             </div>
             <div class="flex items-center space-x-6">
-                <button
-                    class="flex items-center text-text-sub-light dark:text-text-sub-dark hover:text-gray-900 dark:hover:text-white text-sm font-medium transition-colors">
-                    <span class="material-icons-outlined text-lg mr-1.5">help_outline</span>
-                    Help Center
-                </button>
-                <div class="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+
                 <div class="flex items-center space-x-3">
                     <span class="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:block"
                         id="userName">Guest</span>
@@ -151,6 +162,10 @@
                         <p class="text-xs text-slate-400 dark:text-slate-500">
                             Please ensure you have the correct Ticket ID sent to your email.
                         </p>
+                        <p class="text-xs mt-2">
+                            <a href="/contact-support.html" class="text-primary hover:underline">Forgot your Ticket
+                                ID?</a>
+                        </p>
                     </div>
                 </div>
 
@@ -178,10 +193,7 @@
                     <span class="font-semibold text-gray-900 dark:text-white">Shubham EPC Pvt. Ltd.</span>
                     <span>All rights reserved.</span>
                 </div>
-                <div class="flex items-center gap-1">
-                    <span>Powered by</span>
-                    <span class="font-semibold text-primary dark:text-blue-400">Helpdesk Pro</span>
-                </div>
+
             </div>
         </footer>
     </div>
@@ -256,11 +268,62 @@
             <button id="logoutBtn" onclick="handleLogout()"
                 class="hidden w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition-all mt-4">Logout</button>
         </div>
+        <!-- Edit Ticket Modal -->
+        <div id="editTicketModal"
+            class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+            <div class="bg-surface-light dark:bg-surface-dark rounded-2xl shadow-2xl max-w-lg w-full p-8 relative">
+                <button onclick="toggleEditModal()"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200">
+                    <span class="material-icons-outlined">close</span>
+                </button>
+                <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Edit Ticket</h2>
+                <form id="editTicketForm" onsubmit="handleEditSubmit(event)" class="space-y-4">
+                    <input type="hidden" id="editTicketId">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Subject</label>
+                        <input type="text" id="editSubject" required
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                    </div>
+                    <div>
+                        <label
+                            class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                        <textarea id="editDescription" required rows="4"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent"></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Priority</label>
+                        <select id="editPriority"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary focus:border-transparent">
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                            <option value="Urgent">Urgent</option>
+                        </select>
+                    </div>
+                    <div class="flex justify-end gap-3 mt-6">
+                        <button type="button" onclick="toggleEditModal()"
+                            class="px-6 py-2.5 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">Cancel</button>
+                        <button type="submit"
+                            class="px-6 py-2.5 rounded-lg bg-primary hover:bg-blue-800 text-white font-medium shadow-lg transition-all">Save
+                            Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
     <script src="/shared/js/api.js"></script>
+    <script src="/shared/js/chatbot.js"></script>
     <script src="/shared/js/auth.js"></script>
     <script>
+        // Logout Handler
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.clear();
+                window.location.reload(true);
+            }
+        }
+
         const user = Storage.getUser();
         if (user) {
             document.getElementById('userName').textContent = user.name || 'Employee';
@@ -447,8 +510,78 @@
                      <span class="text-sm font-bold text-green-700 dark:text-green-400">Problem Solved</span>
                  </div>
                  ` : ''}
+
+                ${ticket.status === 'Open' ? `
+                <div class="flex justify-end mt-4 pt-4 border-t border-slate-100 dark:border-slate-800">
+                    <button onclick="openEditModal('${ticket.ticketId}', '${(ticket.subject || ticket.title || '').replace(/'/g, "\\'")}', '${(ticket.description || '').replace(/'/g, "\\'").replace(/\n/g, "\\n")}', '${ticket.priority}')" 
+                        class="flex items-center gap-2 px-4 py-2 text-sm font-medium text-primary dark:text-blue-300 bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition-colors">
+                        <span class="material-icons-outlined text-sm">edit</span>
+                        Edit Ticket
+                    </button>
+                </div>
+                ` : ''}
             </div>
             `;
+        }
+
+        // Sidebar toggle for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function toggleAuthModal() {
+            document.getElementById('loginForm').classList.toggle('hidden');
+        }
+
+        // Edit Modal Functions
+        function toggleEditModal() {
+            const modal = document.getElementById('editTicketModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function openEditModal(ticketId, subject, description, priority) {
+            document.getElementById('editTicketId').value = ticketId;
+            document.getElementById('editSubject').value = subject;
+            document.getElementById('editDescription').value = description;
+            document.getElementById('editPriority').value = priority;
+            toggleEditModal();
+        }
+
+        async function handleEditSubmit(e) {
+            e.preventDefault();
+
+            // Check if user is logged in (needed for employeeId verification)
+            const employee = Storage.getUser();
+            if (!employee) {
+                alert('You must be logged in to edit tickets.');
+                toggleEditModal();
+                toggleAuthModal();
+                return;
+            }
+
+            const ticketId = document.getElementById('editTicketId').value;
+            const data = {
+                employeeId: employee.employeeId,
+                subject: document.getElementById('editSubject').value,
+                description: document.getElementById('editDescription').value,
+                priority: document.getElementById('editPriority').value
+            };
+
+            try {
+                const res = await TicketAPI.updateByEmployee(ticketId, data);
+                if (res.success) {
+                    alert('Ticket updated successfully!');
+                    toggleEditModal();
+                    // Refresh search results
+                    document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+                }
+            } catch (error) {
+                alert(error.message || 'Failed to update ticket');
+            }
         }
     </script>
 </body>

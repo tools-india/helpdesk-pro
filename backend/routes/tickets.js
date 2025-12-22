@@ -7,7 +7,7 @@ const {
     getTickets,
     updateTicket,
     getTicketStatistics,
-
+    updateTicketByEmployee
 } = require('../controllers/ticketController');
 const { protect, authorize } = require('../middleware/auth');
 const upload = require('../middleware/upload');
@@ -16,6 +16,7 @@ const upload = require('../middleware/upload');
 router.post('/', upload.array('attachments', 5), createTicket);
 router.get('/employee/:employeeId', getTicketsByEmployeeId);
 router.get('/by-ticket-id/:ticketId', getTicketByTicketId);
+router.put('/employee-update/:ticketId', updateTicketByEmployee);
 
 // Protected routes (for admins)
 router.get('/', protect, authorize('admin'), getTickets);

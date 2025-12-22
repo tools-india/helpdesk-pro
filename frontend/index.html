@@ -27,9 +27,13 @@
             display: ["Inter", "sans-serif"],
           },
           borderRadius: {
-            DEFAULT: "0.5rem",
-            'xl': '0.75rem',
-            '2xl': '1rem',
+            DEFAULT: "5px",
+            'sm': "5px",
+            'md': "5px",
+            'lg': "5px",
+            'xl': "5px",
+            '2xl': "5px",
+            '3xl': "5px",
           },
         },
       },
@@ -79,17 +83,17 @@
           <div class="h-px bg-gray-200 dark:bg-gray-700 mx-2"></div>
         </div>
         <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
-          href="#">
+          href="/knowledge-base.html">
           <span class="material-icons-outlined mr-3">menu_book</span>
           Knowledge Base
         </a>
         <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
-          href="#">
+          href="/it-policy.html">
           <span class="material-icons-outlined mr-3">policy</span>
           IT Policy
         </a>
         <a class="flex items-center px-4 py-3 text-text-sub-light dark:text-text-sub-dark hover:bg-gray-50 dark:hover:bg-gray-800 rounded-lg font-medium transition-colors"
-          href="#">
+          href="/contact-support.html">
           <span class="material-icons-outlined mr-3">mail_outline</span>
           Contact Support
         </a>
@@ -112,12 +116,7 @@
         </div>
       </div>
       <div class="flex items-center space-x-6">
-        <button
-          class="flex items-center text-text-sub-light dark:text-text-sub-dark hover:text-gray-900 dark:hover:text-white text-sm font-medium transition-colors">
-          <span class="material-icons-outlined text-lg mr-1.5">help_outline</span>
-          Help Center
-        </button>
-        <div class="h-6 w-px bg-gray-300 dark:bg-gray-600"></div>
+
         <div class="flex items-center space-x-3">
           <span class="text-sm font-medium text-gray-700 dark:text-gray-300 hidden sm:block" id="userName">Guest</span>
           <div onclick="toggleAuthModal()"
@@ -138,8 +137,8 @@
           How can we help you today?
         </h2>
         <p class="text-lg text-text-sub-light dark:text-text-sub-dark max-w-2xl mx-auto mb-10 leading-relaxed">
-          Welcome to the Employee Support Hub. Submit a new request for IT, HR, or Facilities, or simply track
-          your existing tickets.
+          Welcome to the Shubham EPC Employee Support. Submit a new request for IT & ERP Support or simply track your
+          existing tickets.
         </p>
         <a href="#" onclick="handleCreateTicketClick(event)"
           class="bg-primary hover:bg-blue-800 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:shadow-xl transition-all duration-200 flex items-center mx-auto transform hover:-translate-y-0.5 w-fit">
@@ -176,7 +175,7 @@
           </form>
           <div class="text-right mt-2">
             <a class="text-xs text-text-sub-light dark:text-text-sub-dark hover:text-primary dark:hover:text-blue-400 flex items-center justify-end transition-colors"
-              href="#">
+              href="/contact-support.html">
               Forgot your Ticket ID?
               <span class="material-icons-outlined text-[10px] ml-1">open_in_new</span>
             </a>
@@ -195,10 +194,7 @@
           <span class="font-semibold text-gray-900 dark:text-white">Shubham EPC Pvt. Ltd.</span>
           <span>All rights reserved.</span>
         </div>
-        <div class="flex items-center gap-1">
-          <span>Powered by</span>
-          <span class="font-semibold text-primary dark:text-blue-400">Helpdesk Pro</span>
-        </div>
+
       </div>
     </footer>
   </div>
@@ -299,6 +295,7 @@
   </div>
 
   <script src="/shared/js/api.js"></script>
+  <script src="/shared/js/chatbot.js"></script>
   <script>
     // Track Ticket Function
     function handleTrack(event) {
@@ -514,21 +511,18 @@
     // Handle Logout
     function handleLogout() {
       if (confirm('Are you sure you want to logout?')) {
-        clearEmployeeSession();
-        toggleAuthModal();
+        // Clear entire local storage
+        localStorage.clear();
 
-        // Reset modal
-        document.getElementById('logoutBtn').classList.add('hidden');
-        document.getElementById('loginForm').classList.remove('hidden');
-        switchAuthTab('login');
+        // Update UI immediately
+        updateUIForGuest();
+
+        // Force reload from server
+        window.location.reload(true);
       }
     }
 
-    // Initialize on page load
-    const employee = getLoggedInEmployee();
-    if (employee) {
-      updateUIForLoggedInUser(employee);
-    }
+
   </script>
 </body>
 

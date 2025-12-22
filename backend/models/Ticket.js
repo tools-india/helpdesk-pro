@@ -54,6 +54,10 @@ const ticketSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Description is required']
     },
+    adminResponse: {
+        type: String,
+        default: ''
+    },
     attachments: [{
         filename: String,
         originalName: String,
